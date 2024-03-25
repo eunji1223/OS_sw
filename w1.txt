@@ -25,7 +25,7 @@ echo: 쉘 명령, 내장명령, 프로그램
   * 결합 명령(combined command) : 프로그램 + 옵션 + 내용 
   => 프로그램 구체화하는 역할
   => '-h'
-  => 명령인자(검색은 man <알고자하는 옵션의 명령령>)
+  => 명령인자(검색은 man <알고자하는 옵션의 명령>)
 
   * ls : list
   * cd : change directory => cd /os
@@ -111,7 +111,7 @@ echo: 쉘 명령, 내장명령, 프로그램
   
   - ex1) The가 있는 txt 파일을 전체 조회하라. 
    => grep The *.txt
-  - ex2) /usr/lib에 포함된 하위 디렉터리 개수so 알아내기(drwxrwxrwx에서 d는 directory임.) 
+  - ex2) /usr/lib에 포함된 하위 디렉터리 개수 알아내기(drwxrwxrwx에서 d는 directory임.) 
    => ls -l /usr/lib | cut -c1 | grep d | wc -l
 
 5. sort
@@ -135,7 +135,8 @@ echo: 쉘 명령, 내장명령, 프로그램
   - ex4) 사용자 중 root가 있는지 확인하기
    => head /etc/passwd | cut -d : -f1 | sort | grep root
    => head /etc/passwd | grep root
-   => head /etc/passwd | cut -d : -f1 | grep root가 맞는듯
+   => head /etc/passwd | cut -d : -f1 | grep root가 맞는 듯
+   => 혹은 cut -d : -f1 /etc/passwd | grep root도 맞는 듯
    + 대소문자 구분되기 때문에 Root, root, ROOT 모두 다름
    + root 'abcdroot'도 인식
    + _root_ => -w : root, broot, bayroot, rootfile, ...에서 구분
@@ -151,6 +152,7 @@ echo: 쉘 명령, 내장명령, 프로그램
   - ex1) 성적표(grades 파일)에서 가장 빈번하지 않은 등급부터 출력하기
    => sort -r grades | cut -f1 | uniq -c | sort -n
    => cut -f1 grades | sort -r | uniq -c | sort -n
+   => cut -f1 grades | sort | uniq -c | sort -n(숫자별로 분류하기 때문에 앞에서 reverse 해주지 않아도 됨)
       or sort(해도 같은 결과가 출력되나 이는 숫자가 아닌 A/B 문자열로 분류됐다고 예상됨)
 
 -----------------------------------------------------
@@ -248,4 +250,46 @@ echo: 쉘 명령, 내장명령, 프로그램
       create mode 100644 animals.txt
 
       - branch 정보: main
+      - (root-commit) : 초기 커밋
+      - bb5c3ca : 고유한 해시 값
+      - initial commit : 입력한 commit msg
+      - animals[[Os.txt]] : 커밋에서 변경된 파일 혹은 디렉토리이다.
+      - 1 file changed, 7 insertions(+) : 1개 파일 변경, 7줄 추가 됨을 알리는 메시지이다.
+      - create mode 100644 animals.txt : 새 파일이 생성되었으며 파일의 권한을 나타낸다. 따라서 변경된 파일에 대한 모드 변경을 나타낸다.
+
+
+===========================2024. 03. 25============================
+
+    ex1) grades에서 A,B,C 알파벳 중복 없이 정렬해서 출력하는 코드 보내기. => cut -f1 grades | sort | uniq
+    ex2) sort -n : string -> num
+        string으로 인식될 시 -> 1, 11, 111, 2
+        num으로 인식될 시 -> 1, 2, 11, 111
+
+  5) 깃 추가
+    - 여러 파일을 한번에 스테이징하기
+      git add .
+    - git commit -> txt
+      git commit -m "your msg"
+    - 매 수업에 커밋으로 파일을 저장하는 연습하기
+
+  문서 편집기
+  - vi, vim, emacs, notepad++, ...
+  - "vi" sual editor
+    - vim - vi improved (정규표현식, ... )
+  - 문서 편집기는 프롬프트에서 파일을 직접 편집할 수 있게 해주는 툴
+  - 특징
+    - 화면 단위 편집기: 원하는 줄을 찾아 편집이 가능하다.
+    - 유닉스 계열에서 가장 많이 사용함
+    - 텍스트 편집 기능만 제공함
+    - "less"
+    - 모드 : 일반모드 <-> 입력모드 <-> 명령모드
+      - ESC로 모드 전환
+      - 명령모드 : 파일 저장, 덮어쓸건지, 빠져나갈 건지 등
+        - wq + enter / wq! + enter : 저장 및 빠져나가기
+      => vi로 파일 열기 -> 입력 모드 -> ESC -> 빠져나가기
+      - 입력모드 : 
+        - i : 현 커서에서 입력
+        - a : 현 커서에서 한 칸 뒤에서 입력
+        - o : 한 줄 추가 후 입력
       
+    
