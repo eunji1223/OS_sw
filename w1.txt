@@ -260,7 +260,9 @@ echo: 쉘 명령, 내장명령, 프로그램
 
 ===========================2024. 03. 25============================
 
-    ex1) grades에서 A,B,C 알파벳 중복 없이 정렬해서 출력하는 코드 보내기. => cut -f1 grades | sort | uniq
+    ex1) grades에서 A,B,C 알파벳 중복 없이 정렬해서 출력하는 코드 보내기. 
+      => cut -f1 grades | sort | uniq
+         cut -c1 grades | sort | uniq
     ex2) sort -n : string -> num
         string으로 인식될 시 -> 1, 11, 111, 2
         num으로 인식될 시 -> 1, 2, 11, 111
@@ -274,7 +276,7 @@ echo: 쉘 명령, 내장명령, 프로그램
 
   문서 편집기
   - vi, vim, emacs, notepad++, ...
-  - "vi" sual editor
+  - "vi" (vi)sual editor
     - vim - vi improved (정규표현식, ... )
   - 문서 편집기는 프롬프트에서 파일을 직접 편집할 수 있게 해주는 툴
   - 특징
@@ -330,11 +332,12 @@ echo: 쉘 명령, 내장명령, 프로그램
 
   ex1) 짝수로 끝나는 모든 파일 => grep Linux ch*[24680]
   ex2) 대문자로 시작하고, 언더스코어 포함되어 있는 파이썬 파일 매칭 => [a-z] [A-Z] .py
-  => ls [A-Z]*_.py # name_lee.py (X)
+  => ls [A-Z]*_.py # Name_lee.py (X)
   => grep Linux [A-Z]*_*.py
   ex3) /etc 디렉터리 안에 파일 확장자가 .conf인 파일 목록 조회하기
   => ls /etc/*.conf
-  => ls /etc | grep .conf (X)
+  => ls /etc/ | grep '\.conf$'
+  => ls /etc | grep .conf (X) -> 정규 표현식으로 인식되는데 .을 입력하면 이는 특별한 의미로 인식되기 때문에 의도하는대로 움직이지 않는다
 
   - 매칭되는 파일이 없으면 에러
     ls *.doc => 파일 없으면 No such file or directory 오류
@@ -394,5 +397,7 @@ echo: 쉘 명령, 내장명령, 프로그램
 
   - unalias
     unalias uniqc로 별명 변경 가능
-      
     
+===========================2024. 03. 25======================
+      
+#1. 리다이렉션 redirection
