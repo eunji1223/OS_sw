@@ -131,6 +131,8 @@ echo: 쉘 명령, 내장명령, 프로그램
 
   - ex3) /etc/passwd 디렉터리에서 사용자 이름 정렬하여 추출하기
    => head /etc/passwd | cut -d : -f1 | sort
+   => 아래가 더 맞는 답 같음(head의 default값은 10이기 때문에)
+      cut -d : -f1 /etc/passwd | sort
    + 전체 출력하기: cut -d : -f1 /etc/passwd | sort
   - ex4) 사용자 중 root가 있는지 확인하기
    => head /etc/passwd | cut -d : -f1 | sort | grep root
@@ -152,7 +154,8 @@ echo: 쉘 명령, 내장명령, 프로그램
   - ex1) 성적표(grades 파일)에서 가장 빈번하지 않은 등급부터 출력하기
    => sort -r grades | cut -f1 | uniq -c | sort -n
    => cut -f1 grades | sort -r | uniq -c | sort -n
-   => cut -f1 grades | sort | uniq -c | sort -n(숫자별로 분류하기 때문에 앞에서 reverse 해주지 않아도 됨)
+   => cut -f1 grades | sort | uniq -c | sort -n(숫자별로 분류하기 때문에 앞에서 reverse 해주지 않아도 됨) // 이게 정확
+      해석: 1 필드로 자르고 문자열에 따라 정렬, 인접 한 중복열 갯수 조회, 갯수에 따라 정렬
       or sort(해도 같은 결과가 출력되나 이는 숫자가 아닌 A/B 문자열로 분류됐다고 예상됨)
 
 -----------------------------------------------------
@@ -191,7 +194,8 @@ echo: 쉘 명령, 내장명령, 프로그램
  - email -> git config --global user.email (이메일)
 
  - core.editor
-   - 
+   - git에서 편집기 지정하는 데 사용
+   - git에서 커밋 메시지 작성하거나 리베이스 작업 등에서 편집기 여는 데 사용
    - vi 빠져나올 때는 : q + enter
 
  - git help <프로그램명>

@@ -1,0 +1,5 @@
+hi: command not installed. Multiple versions of this command were found in Nix.
+Select one to run (or press Ctrl-C to cancel):
+error: attribute 'what?' in selection path 'what?' not found
+Failed to install nixpkgs.what?.
+hi: command not found

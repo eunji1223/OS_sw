@@ -1,0 +1,6 @@
+apple,red
+banana,yellow
+strawberry,red
+peach,pink
+cherry,red
+,
