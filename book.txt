@@ -1,0 +1,11 @@
+#!/bin/bash
+
+name=$1
+number=$2
+
+entry="$name  $number"
+
+echo "$entry" >> phonebook.txt
+sort -o phonebook.txt phonebook.txt
+
+echo "완료"

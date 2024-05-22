@@ -1,4 +1,0 @@
-ej  24  Incheon
-hm  25  Gyeonggi
-sy  24  Gyeonggi
-mk  25  Incheon

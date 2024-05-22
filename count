@@ -1,0 +1,8 @@
+#!/bin/bash
+
+
+file=$( ls -l $* | cut -c1 | grep -v d | wc -l )
+folder=$( ls -l $* | cut -c1 | grep d | wc -l )
+
+echo "현재 위치: $*"
+echo "파일 $file개, 폴더 $folder개 입니다."

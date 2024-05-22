@@ -1,0 +1,30 @@
+# git 
+=> 리눅스랑 다른 시스템
+   버전 관리를 함
+
+기존에 배운 것
+- git init(초기화할 때 한번만)
+- git status
+- git add file.txt 
+- git commit -m "commit1"
+
+## 상태 짧게 확인하기
+  - git status -s
+    : 상태가 아주 간단한 알파벳으로 표현됨
+    XY
+      -x: staging area의 상태
+      -y: 현재 디렉토리의 상태
+    ex) M => _M(x는 없고 y만 M으로 되어있는 상태, x는 clean, M은 수정들어간 상태)
+
+  - ?? : untracked(새로 생성된 파일, 깃에서 전혀 보지 못한 파일)
+  - A : added
+  - M : modified
+  - D : deleted
+  - R : renamed
+
+  ex) MM(modified, modified), x와 y가 같은 상황
+      AM(added, modified), x와 y가 다른 상황
+      
+  - !! : ignored(깃에 보이지 않는 무시된 파일까지 보여줌)
+    git status -s '--ignored' : 깃에 보이지 않는 파일의 상태까지 나타냄
+  - "" : clean(아무 것도 안 보이는 empty 상태)
