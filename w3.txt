@@ -28,3 +28,187 @@
   - !! : ignored(깃에 보이지 않는 무시된 파일까지 보여줌)
     git status -s '--ignored' : 깃에 보이지 않는 파일의 상태까지 나타냄
   - "" : clean(아무 것도 안 보이는 empty 상태)
+
+  Q1. 파일 1개 생성 -> 스테이징 -> 수정 -> 커밋 상태마다 바뀌는 거 확인 가능
+  Q2. 파일 옮기기 -> 스테이징 (D -> R) => 두 파일이 같은 파일이라는 사실을 깃이 인지함으로 renamed 상태로 인식
+  Q3. 파일 삭제하기(D)
+
+## 파일 무시하기
+  - git으로 관라할 필요가 없는 파일을 관리하는 파일
+  - .gitignore(관리 필요 없는 파일을) => .git과 동일한 위치
+  - 이 파일은 최상위 디렉터리에 두고, 파일 내부에 관리할 파일의 패턴을 명시한다.
+  ex) 로그파일, 대용량 파일, 데이터 등등 버전 관리가 필요없는 파일들
+  - 패턴: glob 패턴 사용
+
+  ### glob patterns
+    - *: 0개 이상
+    - [abc]: a or b or c ([anc].txt)
+    - ? : 한 글자
+    - [0-9]: -(range), 모든 숫자
+    < 여기까지는 같은 패턴 사용
+
+    1. 디렉토리 명시하는 방법
+       tmp/
+    2. 현재 디렉토리에"만" 적용할 때
+       /a.txt (o)
+       /tmp/a.txt (x)
+       /notes/tmp/a.txt (x)
+    3. !로 시작하는 디렉토리는 적용하지 않는다.
+       !tmp/a.txt
+    4. ** : 디렉토리 내의 모든 디렉토리 적용
+      tmp/**/notes
+
+    ### 문제 : 무시할 파일 패턴으로 명시하기 (.gitignore)
+      1. 확장자가 .a인 파일 => *.a
+      2. 1번 + lib.a는 제외 => *.a + !lib.a
+      3. 현재 디렉토리에 있는 TODO 파일을 적용하되, subdir/TODO 등 하위 디렉토리 파일은 적용하지 않도록
+      4. build 디렉토리에 있는 모든 파일 적용
+      5. doc/notes.txt 파일은 적용하고, doc/server/arch.txt 파일은 적용하지 않기
+      6. doc 디렉토리 아래 모든 .pdf 파일 적용하기
+
+## 깃에서 파일 삭제하기
+(staging을 내리는 작업이나 파일을 삭제하고 commit하는 행위가 될 수 있음 -> 파일 삭제는 되돌릴 수 없음, 주의)
+  1. 현재 디렉토리에서 삭제 -> 커밋
+     ex) rm file
+         git commit
+  2. 깃에서 바로 삭제하기(unstaging의 의미)
+     ex) git rm file
+         git commit
+         
+  => 커밋해야 함
+  - 삭제하는 행위는 되돌릴 수 없다
+  - 커밋 -> 수정 -> 삭제(오류)
+    (수정 후 커밋하지 않아 실수라고 인식할 수 있다, 깃에서 바로 삭제하는 경우)
+    => git rm -f file, 삭제하고 싶으면 '-f'을 달면 된다.
+
+  3. unstaging만 하고 파일은 가지고 있고 싶을 경우 => (.gitignore처럼 깃에는 올리지 않지만 나는 갖고 있고 싶은 경우)
+    git rm --cached file
+    git rm --chached .gitignore => .gitignore 파일도 이러한 방식으로 적용
+
+  4. 패턴 인식됨
+     git rm *.log
+
+## 파일 이름 변경하기
+  'git mv file1 file2'
+
+  - 아래의 세 가지 역할을 함
+  (mv file1 file2
+  git rm file1
+  git add file2)
+
+  => 저장하고자 하면 commit 필수
+
+## 커밋 히스토리 조회하기
+  ### 조회 방법
+      git log
+      - q로 빠져나옴
+      #### 조건 설정해서 조회하는 방법
+        1. n개 조회
+          ex) git log -3
+        
+        2.  커밋마다 어떤 차이가 있는 지 확인(diff): -p
+          => 어떤 부분에 커밋을 하고 어떤 게 추가 삭제가 된 건지 정보가 뜬다.
+        
+        3. 특정 기간을 조회하고 싶을 때, --since --until
+          ex) git log --since=2.days --until=3.minutes
+              --since='2024-05-01'
+        
+        4. -S
+          - 특정 텍스트가 포함된 커밋
+          ex) git log -S tmp
+        
+        5. 디렉토리 특정
+          git log -- tmp/ notes/ => 두 디렉토리도 가능
+        
+        6. 통계 조회하기
+          git log --stat
+          => 어떤 파일이 몇 번 커밋, 수정됐는지
+
+        7. 사용자 지정 출력 형식으로 보기
+          git log --pretty
+          (shotr, oneline, full, fuller)
+
+          => git log --pretty=short
+          => git log --pretty=format:"%h - %an, %ar : %s"
+            h: 커밋 해시
+            an: author name
+            ar: author relative time
+            s: summary
+
+        Q. 다음을 만족하는 커밋 히스토리를 검색하시오.
+           "커밋 해시 - 요약"
+           2008-10-1부터 2008-11-01까지
+           t/ 경로에 대해서
+
+            => git log -- t/ \
+                       --since="2008-10-1" \
+                       --until="2008-11-1" \
+                       --pretty=format:"%h - %s"
+
+## 되돌리기
+  - 작업 도중 어떤 것을 되돌리기
+  - 돌아가는 시점은 마지막 커밋
+    수정 -> "커밋" -> 수정 -> 되돌리기 => 이게 logically
+    수정 -> 커밋 -> 수정 -> "커밋" -> 되돌리기
+  - 되돌리면 복구 안됨
+
+  1) 추가 커밋(파일 바꾸고 커밋하고 싶을 때)
+    git commit --amend
+    - 이전 커밋을 수정하는 역할
+    - 수정을 추가한다.
+      1. 커밋 -> 파일 새로 만들 때
+        git commit
+        git add
+        git commit --amend
+      2. 커밋 -> 수정 -> git commit -a --amend
+      
+  2) 이전 상태로 되돌리기
+     git 'reset HEAD' file_name => file 이전 커밋 상태로 돌아감
+  3) 파일 내용 되돌리기
+     git checkout -- file_name
+    - 내용이 전부 사라지기 때문에 주의할 것
+
+# 원격 저장소
+  remote repository
+  - 인터넷이나 네트워크를 통해 로컬이 아닌 곳에 있는 저장소
+  - 읽고 쓰기 등의 권한을 지정할 수 있고(타인도 가능)
+  - 사용하는 목적: 협업
+  - 여러 개 등록 가능함
+  - 깃허브
+
+  1. 내 로컬에 원격 저장소 확인하기
+     git remote -v (더 자세한 정보)
+     - 현재 프로젝트에 등록된 원격 저장소 정보 확인하기
+     - 원하는 디렉토리에 가서 실행해야 한다.
+
+  2. 원격 저장소 만들기(깃허브에)
+    - 깃허브에서 레포 파기
+    - public으로 해야 replit과 연결됨
+    - .gitignore, readme 파일 추가하지 말고 연결하기
+    - 연결 url: github.com/내아이디/레포이름.git
+      code > 복사하기 아이콘
+
+  3. 원격 저장소 추가하기
+    1) git remote add <name> <url>
+      - name : origin(주로), 내가 원하는 별명으로
+      ex) git remote add origin <~url~>
+    2) 저장소의 정보 가져오기
+      git fetch origin # 원격 저장소에 정보가 많을 경우, 내용 비교하고 가져오기 위해
+      git branch # 내 브랜치명 확인하기
+      git pull origin main # 비어있을 때
+      git pull <remote_name> <branch_name>
+
+    3) 원격 저장소와 로컬 저장소 합쳐서 모두 원격으로 올리기
+      git push -u origin main # '-u' 옵션은 처음만
+
+    4) 원격 레포에 모든 파일이 업로드 되면 완료
+      
+  4. 루틴
+    - pull & push
+    - 수정 > 커밋 > pull > push (항상 pull 먼저 체크하기)
+
+  5. 과제
+    - README.md
+      - 레포에 대한 소개, 설치 방법, 협업 방식 알려주는 파일
+    - contributing.md
+      - 협업 방식 알려주는 파일
