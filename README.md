@@ -19,7 +19,9 @@
 
 ### 폴더 설명
 
-- `mammals/`: test폴더입니다.
+- `mammals/`: test 폴더입니다.
+- `new_dir2/new_dir` : test 폴더입니다.
+- `new_dir3` : test 폴더입니다.
 -> 나머지는 가상으로 설정
 - `Notes/`: 수업 필기 파일들을 저장하는 폴더입니다.
 - `Projects/`: 프로젝트 파일들을 저장하는 폴더입니다.
